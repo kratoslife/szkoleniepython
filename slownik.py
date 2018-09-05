@@ -23,8 +23,10 @@ print(add_new(ewidencja,'Jan',40,4000))
 def print_all(ew):
     """drukuje ewidencje"""
     for a in ewidencja:
-        print("Pracownik o imieniu", a.get('imie') ,"ktory ma", a.get('wiek') ,"lat i jego zarobki to", a.get('zarobki'))
-
+        #print("Pracownik o imieniu", a.get('imie') ,"ktory ma", a.get('wiek')` ,"lat i jego zarobki to", a.get('zarobki'))
+        #print("Pracownik o imieniu %(imie)s ktory ma %(wiek)d, lat i jego zarobki to %(zarobki)d" % a)
+        print("Pracownik o imieniu {osoba[imie]} ktory ma {osoba[wiek]}, lat i jego zarobki to {osoba[zarobki]}" .format(osoba=a))
+        print("Pracownik o imieniu {name} ktory ma {age}, lat i jego zarobki to {salary}" .format(name=a['imie'], age=a['wiek'], salary=a['zarobki']))
 print(print_all(ewidencja))
 def salary_avg(ew):
     """zwraca srednie zarobki"""

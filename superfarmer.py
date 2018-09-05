@@ -1,85 +1,66 @@
 import random
-
-def dodaj_kilka_razy(lista,wartosci,powtorzenie):
-    for i in range(powtorzenie):
-
-        lista.append(wartosci)
-
-
-
-def rzut_kostka(nazwa):
-    lista = []
-
-    for i in nazwa:
-        dodaj_kilka_razy(lista,i[0],i[1])
-
-    losowanie = random.randint(0, len(lista)-1)
-    return (lista[losowanie])
-
-
-
-
-
+import kostka2
+import logikagry
+#dodanie powtarzania
 
 zielona = [('wilk', 1), ('krowa', 1), ('świnia', 1), ('owca', 3), ('królik', 6)]
 czerwona = [('lis', 1), ('koń', 1), ('świnia', 2), ('owca', 2), ('królik', 6)]
 
 
-
-def sprawdzenie(ilosc,nazwa):
-
-    slownik = {}
-
-    for i in range(ilosc):
-        w = rzut_kostka(nazwa)
-        slownik[w]=slownik.get(w , 0) + 1
-
-    return slownik
-
-
-
-#tworzenie stada
-def tworzstado():
-    stado = {'duży pies': 2, 'mały pies': 4, 'koń': 6, 'krowa': 12, 'świnia': 20, 'owca': 24, 'królik': 60}
-
-    return stado
-
-
-print(tworzstado())
-zagroda = {}
-#funkcja przeganiania zwierzat uzyta w transferze
-def przeganianie(stado,zagroda,zwierz,ile_na_kostkach):
-
-    ile_w_zagrodzie = zagroda.get(zwierz, 0)
-    ile_dodac = (ile_w_zagrodzie + ile_na_kostkach) // 2
-    stado[zwierz] = stado[zwierz] - ile_dodac
-    zagroda[zwierz] = ile_w_zagrodzie + ile_dodac
-
-#transfer zwierzat
-def transfer(kostka1,kostka2,stado,zagroda):
-    if kostka1 == kostka2:
-        przeganianie(stado,zagroda,kostka1,2)
-        print("przeganianie1",stado)
+def rozgrywka():
+    wartosckostki1 = kostka2.Kostka(zielona)
+    wartosckostki2 = kostka2.Kostka(czerwona)
+    zagrody_graczy=[]
+    stadograczy=logikagry.tworzstado()
+    gracze=input('Podaj liczbe graczy: ')
+    ruch=input('Podaj ilosc rzutow: ')
+    gracze=int(gracze)
+    ruch=int(ruch)
+    if gracze < 2:
+        print("Podales za mala ilosc graczy, chcesz grac sam?!")
+        return
+    elif gracze > 6:
+        print("Podales za duza ilosc graczy!")
+        return
     else:
-        przeganianie(stado,zagroda,kostka1,1)
-        przeganianie(stado,zagroda,kostka2,1)
+        for i in range(gracze):
+            zagrody_graczy.append({})
+        while ruch > 0:
+            for j in range(gracze):
+
+                rzut = wartosckostki1.losuj()
+                rzut2 = wartosckostki2.losuj()
+                logikagry.transfer(rzut,rzut2,stadograczy,zagrody_graczy[j])
+                #print(wywolanie)
+                print(ruch)
+                print("gracz: ",j)
+                print('rzut 1',rzut)
+                print('rzut 2',rzut2)
+                print("stado",stadograczy)
+                print("pokaz zagrode",zagrody_graczy[j])
+                #for e in zagrody_graczy[j].values():
+                    #if e == 0:
+                        #print("przegrales")
+                    #else:
+                        #print('wygrales')
+            ruch -= 1
+
+print(rozgrywka())
+#x=tworzstado()
+#y=transfer('mały pies','mały pies',x,zagroda)
+#y=transfer('królik','królik',x,zagroda)
+#y=transfer('koń','koń',x,zagroda)
+#print(rzez('lis',zagroda,x))
+#print(zagroda)
+#print(x)
 
 
-    print('na koniec', zagroda)
-    print('na koniec',stado)
+#test# dla pytest
 
-
-#test dla pytest
-x=tworzstado()
-def testujemy_test(kostka1,kostka2,stado,zagroda):
-
-    if kostka1 == kostka2:
-        przeganianie(stado,zagroda,kostka1,2)
-    else:
-        przeganianie(stado,zagroda,kostka1,1)
-        przeganianie(stado,zagroda,kostka2,1)
-
-
-
-
-
+#def testujemy_test(kostka1,kostka2,stado,zagroda):
+#
+#    if kostka1 == kostka2:
+#        przeganianie(stado,zagroda,kostka1,2)
+#    else:
+#        przeganianie(stado,zagroda,kostka1,1)
+#        przeganianie(stado,zagroda,kostka2,1)
